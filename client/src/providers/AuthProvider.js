@@ -1,67 +1,70 @@
 import React from "react";
+import { useState } from "react";
 import Axios from "axios";
 
-//creating context and giving context to our consumer
 export const AuthContext = React.createContext();
-export const AuthConsumer = AuthContext.Consumer;
 
-export class AuthProvider extends React.Component {
-  // init state
-  state = { user: null };
-
-  //handlers for different states in user auth
-
-  //register
-  handleRegister = (user, history) => {
-    Axios.post("/api/auth", user)
-      .then((res) => {
-        // this.setState({ user: res.data.data });
-        console.log(res);
-        history.push("/");
-      })
-      .catch((err) => {
-        alert(`Error in Registration: ${err.response.data}`);
-      });
+const AuthProvider = (props) => {
+  const handleRegister = async (user, history) => {
+    try {
+      setLoading(true);
+      let res = await Axios.post("/api/auth", user);
+      console.log("user: ", res.data.data);
+      setUser(res.data.data);
+      setLoading(false);
+      history.push("/");
+    } catch (err) {
+      alert(
+        "Error occurred while attempting to register user. Please Debug for more information"
+      );
+      setLoading(false);
+    }
   };
 
-  //login
-  handleLogin = (user, history) => {
-    Axios.post("/api/auth/sign_in", user)
-      .then((res) => {
-        this.setState({ user: res.data.data });
-        history.push("/");
-      })
-      .catch((err) => {
-        alert(err.response.data);
-      });
+  const handleLogin = async (user, history) => {
+    try {
+      setLoading(true);
+      let res = await Axios.post("/api/auth/sign_in", user);
+      setUser(res.data.data);
+      setLoading(false);
+      history.push("/");
+      console.log(res.data.data.email);
+    } catch (err) {
+      alert(
+        "Error occurred while attempting to Login user. Please Debug for more information"
+      );
+      setLoading(false);
+    }
   };
 
-  //logout
-  handleLogout = (history) => {
-    Axios.delete("/api/auth/sign_out")
-      .then((res) => {
-        this.setState({ user: null });
-        history.push("/login");
-      })
-      .catch((err) => {
-        alert(`Error in Logout: ${err.response.data}`);
-      });
+  const handleLogout = async (history) => {
+    // debugger
+    try {
+      await Axios.delete("/api/auth/sign_out");
+      setUser(null);
+      history.push("/login");
+    } catch (err) {
+      alert(
+        "Error occurred while attempting to Logout user. Please Debug for more information"
+      );
+    }
   };
 
-  render() {
-    return (
-      <AuthContext.Provider
-        value={{
-          ...this.state.user,
-          authenticated: this.state.user !== null,
-          handleRegister: this.handleRegister,
-          handleLogin: this.handleLogin,
-          handleLogout: this.handleLogout,
-          setUser: (user) => this.setState({ user }),
-        }}
-      >
-        {this.props.children}
-      </AuthContext.Provider>
-    );
-  }
-}
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const auth = {
+    ...user,
+    loading,
+    handleRegister,
+    handleLogin,
+    handleLogout,
+    authenticated: user !== null,
+    setUser,
+  };
+
+  return (
+    <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
+  );
+};
+export default AuthProvider;

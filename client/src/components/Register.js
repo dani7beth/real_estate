@@ -7,14 +7,14 @@ export default (props) => {
   const [email, setEmail] = useState("test@test.com");
   const [password, setPassword] = useState("123456");
   const [confirmPassword, setConfirmPassword] = useState("123456");
-
-  const { handleRegister } = useContext(AuthContext);
+  const [name, setName] = useState("");
+  const { handleRegister, loading } = useContext(AuthContext);
 
   //handle submit form
   const handleSubmit = () => {
     if (password === confirmPassword) {
-      handleRegister({ email, password }, props.history);
-    }else{
+      handleRegister({ email, password, name }, props.history);
+    } else {
       alert("passwords dont match");
     }
   };
@@ -23,6 +23,12 @@ export default (props) => {
     <>
       <Header as="h1">Register</Header>
       <Form onSubmit={handleSubmit}>
+        <Form.Input
+          label="name"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <Form.Input
           label="Email"
           name="email"
@@ -42,7 +48,9 @@ export default (props) => {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <Segment basic textAlign="center">
-          <Button type="submit">register</Button>
+          <Button primary loading={loading} disabled={loading} type="submit">
+            register
+          </Button>
         </Segment>
       </Form>
     </>

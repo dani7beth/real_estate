@@ -7,7 +7,7 @@ export default (props) => {
   const [email, setEmail] = useState("test@test.com");
   const [password, setPassword] = useState("123456");
   //call the handlelogin function
-  const { handleLogin } = useContext(AuthContext);
+  const { handleLogin, loading } = useContext(AuthContext);
 
   //handle form submition
   const handleSubmit = () => {
@@ -34,7 +34,7 @@ export default (props) => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Segment basic textAlign="center">
-            <Button type="submit">login</Button>
+            <Button loading={loading} disabled={loading} type="submit">login</Button>
           </Segment>
         </Form>
       </Segment>

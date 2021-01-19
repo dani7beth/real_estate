@@ -1,39 +1,46 @@
 import React from "react";
 import { useState } from "react";
 import Axios from "axios";
+import { useHistory } from "react-router-dom";
 
 export const AuthContext = React.createContext();
 
 const AuthProvider = (props) => {
-  const handleRegister = async (user, history) => {
+  const handleRegister = async (user, history, setLoader) => {
     try {
       setLoading(true);
+      // console.log("before axios");
+      // let r = await Axios.get("https://reqres.in/api/users?delay=3");
+      // console.log("after axios");
       let res = await Axios.post("/api/auth", user);
-      console.log("user: ", res.data.data);
-      setUser(res.data.data);
+      // console.log("user: ", res.data.data);
       setLoading(false);
+      // let r12 = await Axios.get("https://reqres.in/api/users?delay=3");
+      // console.log("after axios 2ND");
+      setUser(res.data.data);
       history.push("/");
     } catch (err) {
+      setLoading(false);
       alert(
         "Error occurred while attempting to register user. Please Debug for more information"
       );
-      setLoading(false);
     }
   };
 
   const handleLogin = async (user, history) => {
     try {
       setLoading(true);
+      let r = await Axios.get("https://reqres.in/api/users?delay=3");
       let res = await Axios.post("/api/auth/sign_in", user);
-      setUser(res.data.data);
       setLoading(false);
+      setUser(res.data.data);
       history.push("/");
       console.log(res.data.data.email);
     } catch (err) {
+      setLoading(false);
       alert(
         "Error occurred while attempting to Login user. Please Debug for more information"
       );
-      setLoading(false);
     }
   };
 
@@ -67,4 +74,5 @@ const AuthProvider = (props) => {
     <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
   );
 };
+
 export default AuthProvider;

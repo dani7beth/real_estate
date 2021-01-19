@@ -8,7 +8,7 @@ export default (props) => {
   const [password, setPassword] = useState("123456");
   const [confirmPassword, setConfirmPassword] = useState("123456");
   const [name, setName] = useState("");
-  const { handleRegister, loading } = useContext(AuthContext);
+  const { handleRegister, loading, authError } = useContext(AuthContext);
 
   //handle submit form
   const handleSubmit = () => {
@@ -19,9 +19,18 @@ export default (props) => {
     }
   };
 
+  const checkAuthError = () =>{
+    if(authError){
+     return  authError.map((err)=>(
+        <p style={{color: 'red'}}>{err}</p>
+      ))
+    }
+  }
+
   return (
     <>
       <Header as="h1">Register</Header>
+      {checkAuthError()}
       <Form onSubmit={handleSubmit}>
         <Form.Input
           label="name"

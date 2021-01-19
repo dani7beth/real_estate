@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import { Container } from "semantic-ui-react";
 import FetchUser from "./components/FetchUser";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Available from "./components/Available";
 
 function App() {
   return (
@@ -17,10 +18,10 @@ function App() {
       <FetchUser>
         <Container>
           <Switch>
-            <ProtectedRoute exact path="/" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            <Route exact path="/things" component={Things} />
+            <Route exact path="/available" component={Available} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

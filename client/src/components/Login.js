@@ -1,43 +1,43 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../providers/AuthProvider";
-import { Header, Button, Form, Segment } from "semantic-ui-react";
+import { useState, useContext } from "react";
+import AuthProvider, { AuthContext } from "../providers/AuthProvider";
+import { Form, Header } from "semantic-ui-react";
 
-export default (props) => {
-  //init email and password for login
-  const [email, setEmail] = useState("test@test.com");
+const Register = (props) => {
+  const [email, setEmail] = useState("testy@test.com");
   const [password, setPassword] = useState("123456");
-  //call the handlelogin function
-  const { handleLogin } = useContext(AuthContext);
 
-  //handle form submition
+  const { handleLogin, loading } = useContext(AuthContext);
+
   const handleSubmit = () => {
     handleLogin({ email, password }, props.history);
   };
-
   return (
     <>
-      <Segment>
-        <Header as="h1" textAlign="center">
+      <Header as="h1" textAlign="center">
+        Login
+      </Header>
+      <Form onSubmit={handleSubmit}>
+        <Form.Input
+          required
+          autoFocus
+          name="email"
+          label="Email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        ></Form.Input>
+        <Form.Input
+          required
+          name="password"
+          label="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        ></Form.Input>
+        <Form.Button loading={loading} disabled={loading} type="submit">
           Login
-        </Header>
-        <Form onSubmit={handleSubmit}>
-          <Form.Input
-            label="Email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Form.Input
-            label="Password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Segment basic textAlign="center">
-            <Button type="submit">login</Button>
-          </Segment>
-        </Form>
-      </Segment>
+        </Form.Button>
+      </Form>
     </>
   );
 };
+
+export default Register;

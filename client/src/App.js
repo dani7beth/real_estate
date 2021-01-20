@@ -10,6 +10,7 @@ import { Container } from "semantic-ui-react";
 import FetchUser from "./components/FetchUser";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Available from "./components/Available";
+import AvailableCustom from "./components/AvailableCustom";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/available" component={Available} />
+            <Route exact path='/available_custom' component={AvailableCustom} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

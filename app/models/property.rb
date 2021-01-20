@@ -15,4 +15,10 @@ class Property < ApplicationRecord
     .order('a.id')
   end
 
+  def self.by_city(city)
+    select('properties.id, beds, baths, sq_ft, price, sold, city, zip')
+    .joins('inner join addresses a ON a.property_id = properties.id')
+    .where('lower(a.city) = ? and sold <> true', city)
+  end
+
 end

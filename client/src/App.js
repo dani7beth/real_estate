@@ -11,6 +11,8 @@ import FetchUser from "./components/FetchUser";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Available from "./components/Available";
 import AvailableCustom from "./components/AvailableCustom";
+import Cities from "./components/Cities";
+import FindHome from "./components/FindHome";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route exact path="/register" component={Register} />
             <Route exact path="/available" component={Available} />
             <Route exact path='/available_custom' component={AvailableCustom} />
+            <Route exact path='/cities' component={Cities} />
+            <Route exact path ='/find_home' component={FindHome} />
             <Route component={NoMatch} />
           </Switch>
         </Container>
